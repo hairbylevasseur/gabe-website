@@ -70,11 +70,21 @@
       text-decoration: none; transition: background 0.18s; display: inline-block;
     }
     .nav-cta:hover { background: #2e2c29; }
-    @media (max-width: 820px) { .nav-links { display: none; } .nav { padding: 10px 12px 10px 20px; } }
+    .nav-private-mobile {
+      display: none; color: var(--muted); text-decoration: none;
+      font-size: 12px; font-weight: 500; white-space: nowrap;
+    }
+    .nav-private-mobile:hover { color: var(--ink); }
+    @media (max-width: 820px) {
+      .nav-links { display: none; }
+      .nav-private-mobile { display: inline-block; }
+      .nav { padding: 10px 12px 10px 20px; gap: 12px; }
+    }
     @media (max-width: 480px) {
       .nav { margin: 8px 12px 0; top: 8px; }
       .nav-brand { font-size: 17px; }
-      .nav-cta { padding: 9px 14px; font-size: 12px; }
+      .nav-private-mobile { font-size: 11px; }
+      .nav-cta { padding: 9px 12px; font-size: 11px; }
     }
 
     /* ─── HERO ─── */
@@ -431,6 +441,8 @@
     .booking-form { background: var(--surface); border: 1px solid var(--hairline); padding: 40px; }
     .form-title { font-family: var(--display); font-size: 26px; letter-spacing: -0.015em; font-weight: 400; margin-bottom: 4px; }
     .form-sub { font-size: 13.5px; color: var(--muted); margin-bottom: 28px; }
+    .form-private-note { font-size: 13px; line-height: 1.6; color: var(--muted); margin: -10px 0 28px; }
+    .form-private-note a { color: var(--ink); font-weight: 600; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
     .form-group label { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
@@ -504,7 +516,9 @@
     <li><a href="#services">Services</a></li>
     <li><a href="#testimonials">Reviews</a></li>
     <li><a href="#press">Press</a></li>
+    <li><a href="#contact">Private Clients</a></li>
   </ul>
+  <a class="nav-private-mobile" href="#contact">Private Clients</a>
   <a class="nav-cta" href="#contact">Book a session</a>
 </header>
 
@@ -517,7 +531,6 @@
       <p class="hero-lede reveal">Every cut is a conversation. Gabriel brings precision craftsmanship and a quiet eye for artistry to each session — transforming the ordinary into something you'll want to show off.</p>
       <div class="hero-actions reveal">
         <a class="btn-primary" href="https://na2.meevo.com/CustomerPortal/onlinebooking/booking/guestinfo?tenantId=502005&amp;locationId=502642" target="_blank" rel="noopener">BOOK WITH GABRIEL @ KINHOUSE SOHO</a>
-        <a class="btn-ghost" href="#contact">RESERVE</a>
       </div>
     </div>
     <div class="hero-right">
@@ -760,6 +773,7 @@
       <div class="booking-form reveal" data-od-id="booking-form">
         <h3 class="form-title">Request an appointment</h3>
         <p class="form-sub">We'll confirm within 24 hours.</p>
+        <p class="form-private-note">This form is reserved exclusively for private clientele and personal referrals. For general appointments, please visit the <a href="https://na2.meevo.com/CustomerPortal/onlinebooking/booking/guestinfo?tenantId=502005&amp;locationId=502642" target="_blank" rel="noopener noreferrer">KINHOUSE SOHO</a>.</p>
         <!-- Posts to Web3Forms, which emails the booking to contact@hairbylevasseur.com.
              The action/method work on their own if JavaScript fails; the script below
              upgrades this to an inline submit that keeps the visitor on the page.
