@@ -550,7 +550,7 @@
         <span class="section-label">About</span>
         <h2 class="about-title">Precision craft,<br><em>personal touch.</em></h2>
         <p>Gabriel is a hairstylist specializing in both women's and men's cutting and coloring. Born and raised in Ventura, California, he began his career as a barber, where he developed a strong foundation in precision cutting.</p>
-        <p>As his craft evolved, Gabriel expanded into women's hairstyling, discovering a deeper passion for the creativity, artistry, and technical skill it allows him to express. Today, he works at KINHOUSE in SoHo, NYC — a thoughtful, light-filled salon that matches his approach.</p>
+        <p>As his craft evolved, Gabriel expanded into women's hairstyling, discovering a deeper passion for the creativity, artistry, and technical skill it allows him to express. Today, he works at KINHOUSE in SoHo, NYC.</p>
         <p>His philosophy: hair should move with you, not against you. Every session starts with a real conversation about your lifestyle, your texture, how much time you want to spend in the mirror each morning.</p>
       </div>
     </div>
@@ -898,64 +898,3 @@
 
     var btn = form.querySelector('.form-submit');
     var status = document.getElementById('formStatus');
-    var FALLBACK = 'Please call <a href="tel:+15125673884">(+1) 512-567-3884</a> ' +
-                   'or email <a href="mailto:contact@hairbylevasseur.com">contact@hairbylevasseur.com</a>.';
-
-    function setStatus(state, html) {
-      status.className = 'form-status is-' + state;
-      status.innerHTML = html;
-      status.hidden = false;
-    }
-
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      // Let the browser run its own required/email-format checks first.
-      if (!form.reportValidity()) return;
-
-      var data = Object.fromEntries(new FormData(form));
-
-      // A more useful subject line than a generic one, built from the request.
-      var who = [data['First name'], data['Last name']].filter(Boolean).join(' ').trim();
-      data.subject = 'Appointment request' +
-                     (who ? ' — ' + who : '') +
-                     (data.Service ? ' (' + data.Service + ')' : '');
-
-      btn.disabled = true;
-      btn.textContent = 'Sending…';
-      setStatus('sending', 'Sending your request…');
-
-      fetch(form.action, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(data)
-      })
-        .then(function(res) {
-          return res.json()
-            .catch(function() { return {}; })
-            .then(function(json) { return { ok: res.ok, json: json }; });
-        })
-        .then(function(result) {
-          // Treat it as sent only if the request succeeded AND Web3Forms
-          // did not explicitly report a failure.
-          if (!result.ok || result.json.success === false) {
-            throw new Error(result.json.message || 'Request failed');
-          }
-          form.reset();
-          btn.textContent = 'Send request';
-          setStatus('ok', '<strong>Request sent.</strong> Gabriel will confirm within 24 hours. ' +
-                          'Check your spam folder if you do not hear back.');
-        })
-        .catch(function() {
-          // Never claim success on failure, and never discard what they typed.
-          btn.textContent = 'Send request';
-          setStatus('error', '<strong>That did not send.</strong> ' + FALLBACK);
-        })
-        .then(function() {
-          btn.disabled = false;
-        });
-    });
-  })();
-</script>
-</body>
-</html>
