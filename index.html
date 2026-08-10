@@ -513,7 +513,6 @@
   <ul class="nav-links" role="list">
     <li><a href="#about">About</a></li>
     <li><a href="#gallery">Work</a></li>
-    <li><a href="#services">Services</a></li>
     <li><a href="#testimonials">Reviews</a></li>
     <li><a href="#press">Press</a></li>
     <li><a href="#contact">Private Clients</a></li>
@@ -595,80 +594,6 @@
 
   <hr class="section-rule">
 
-  <section class="services" id="services" data-od-id="services">
-    <div class="services-visual">
-      <img src="motusafx-PHOTO-2026-05-05-17-32-14.jpg" alt="Gabriel at work" id="servicesImg" loading="lazy"/>
-      <div class="services-visual-content reveal">
-        <span class="section-label" style="color:var(--accent)">Services &amp; pricing</span>
-        <h2 class="services-visual-title">Everything<br>you <em>need.</em></h2>
-        <p class="services-visual-note">Prices marked with + reflect a starting rate — Gabriel will confirm before your appointment.</p>
-      </div>
-    </div>
-    <div class="services-list-side">
-      <div class="services-toggle-wrap">
-        <button class="svc-toggle-btn active" data-panel="women" data-img="motusafx-PHOTO-2026-05-05-17-32-14.jpg">Women</button>
-        <button class="svc-toggle-btn" data-panel="men" data-img="motusaf7-PHOTO-2026-05-05-17-20-43.jpg">Men</button>
-      </div>
-
-      <div class="services-panel active" id="panel-women">
-        <div class="services-list">
-          <span class="services-group-label">Cuts &amp; Styling</span>
-          <div class="service-row">
-            <div><div class="service-name">Women's Haircut &amp; Style</div><div class="service-detail">Includes shampoo, blowdry &amp; style</div></div>
-            <div class="service-price">$100+</div>
-          </div>
-          <div class="service-row">
-            <div><div class="service-name">Blowout</div><div class="service-detail">Shampoo &amp; style · +$20 for curls, straightening, or extensions</div></div>
-            <div class="service-price">$50+</div>
-          </div>
-        </div>
-        <div class="services-list">
-          <span class="services-group-label">Color</span>
-          <div class="service-row">
-            <div><div class="service-name">Base / Roots Color Retouch</div><div class="service-detail">Includes shampoo, blowdry &amp; style</div></div>
-            <div class="service-price">$90</div>
-          </div>
-          <div class="service-row">
-            <div><div class="service-name">Gloss / Toner</div><div class="service-detail">Consultation, shampoo, blowdry &amp; style</div></div>
-            <div class="service-price">$100+</div>
-          </div>
-          <div class="service-row">
-            <div><div class="service-name">Custom Single Color</div><div class="service-detail">All-over single color, consultation, shampoo, blowdry &amp; style</div></div>
-            <div class="service-price">$140+</div>
-          </div>
-          <div class="service-row">
-            <div><div class="service-name">Partial Highlights</div><div class="service-detail">Partial highlights, gloss/toner, consultation, shampoo, blowdry &amp; style</div></div>
-            <div class="service-price">$200+</div>
-          </div>
-          <div class="service-row">
-            <div><div class="service-name">Balayage</div><div class="service-detail">Consultation, gloss/toner, shampoo, blowdry &amp; style</div></div>
-            <div class="service-price">$250+</div>
-          </div>
-          <div class="service-row">
-            <div><div class="service-name">Full Highlights</div><div class="service-detail">Full highlights, gloss/toner, consultation, shampoo, blowdry &amp; style</div></div>
-            <div class="service-price">$250+</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="services-panel" id="panel-men">
-        <div class="services-list">
-          <span class="services-group-label">Cuts</span>
-          <div class="service-row">
-            <div><div class="service-name">Men's Haircut &amp; Style</div><div class="service-detail">Precision cut with shampoo &amp; style</div></div>
-            <div class="service-price">$65</div>
-          </div>
-        </div>
-        <div class="services-list">
-          <span class="services-group-label">Add-ons</span>
-          <div class="men-addons">
-            <div class="addon-row"><span class="addon-name">Beard Shaping</span><span class="addon-price">+$15</span></div>
-            <div class="addon-row"><span class="addon-name">Mustache Trim</span><span class="addon-price">+$5</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <hr class="section-rule">
 
@@ -837,7 +762,6 @@
     <nav class="footer-nav" aria-label="Footer">
       <a href="#about">About</a>
       <a href="#gallery">Work</a>
-      <a href="#services">Services</a>
       <a href="#testimonials">Reviews</a>
       <a href="#press">Press</a>
       <a href="#contact">Book</a>
@@ -872,20 +796,6 @@
     }, { passive: true });
     tick();
   })();
-
-  document.querySelectorAll('.svc-toggle-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var panel = this.getAttribute('data-panel');
-      var img = this.getAttribute('data-img');
-      document.querySelectorAll('.svc-toggle-btn').forEach(function(b) { b.classList.remove('active'); });
-      document.querySelectorAll('.services-panel').forEach(function(p) { p.classList.remove('active'); });
-      this.classList.add('active');
-      var target = document.getElementById('panel-' + panel);
-      if (target) target.classList.add('active');
-      var svcImg = document.getElementById('servicesImg');
-      if (svcImg && img) { svcImg.src = img; }
-    });
-  });
 
   /* ─── BOOKING FORM ───────────────────────────────────────────────
      Submits to Web3Forms over fetch so the visitor stays on the page.
