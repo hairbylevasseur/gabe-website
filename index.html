@@ -552,7 +552,7 @@
       </div>
     </div>
     <div class="hero-right">
-      <video src="07242826-591B-49F8-A471-3F6058690FD7.MP4" autoplay muted loop playsinline webkit-playsinline preload="auto"></video>
+      <video src="07242826-591B-49F8-A471-3F6058690FD7.MP4" autoplay muted loop playsinline webkit-playsinline disableRemotePlayback preload="auto"></video>
     </div>
   </section>
 
@@ -807,13 +807,19 @@
       video.setAttribute('muted', '');
       video.setAttribute('playsinline', '');
       video.setAttribute('webkit-playsinline', '');
+      video.setAttribute('disableRemotePlayback', '');
       video.addEventListener('loadeddata', function() { start(video); }, { once: true });
+      video.addEventListener('canplay', function() { start(video); }, { once: true });
+      video.addEventListener('loadedmetadata', function() { start(video); }, { once: true });
       start(video);
     });
 
     document.addEventListener('visibilitychange', function() {
       if (!document.hidden) videos.forEach(start);
     });
+    window.addEventListener('pageshow', function() { videos.forEach(start); });
+    window.addEventListener('touchstart', function() { videos.forEach(start); }, { once: true, passive: true });
+    window.addEventListener('pointerdown', function() { videos.forEach(start); }, { once: true, passive: true });
   })();
 
   (function() {
