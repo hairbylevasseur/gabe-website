@@ -367,8 +367,7 @@
       position: relative;
     }
     .testi-item:nth-child(3n) { border-right: none; }
-    .testi-item:nth-child(4),
-    .testi-item:nth-child(5) { border-bottom: none; }
+    .testi-item:nth-last-child(-n+3) { border-bottom: none; }
     .testi-item::before {
       content: '';
       position: absolute; left: 0; top: 36px; bottom: 36px;
@@ -399,8 +398,9 @@
       .testi-item:nth-child(3n) { border-right: 1px solid var(--hairline); }
       .testi-item:nth-child(2n) { border-right: none; }
       .testi-item:nth-child(4),
-      .testi-item:nth-child(5) { border-bottom: none; }
+      .testi-item:nth-child(5) { border-bottom: 1px solid var(--hairline); }
       .testi-item:nth-child(3) { border-bottom: 1px solid var(--hairline); }
+      .testi-item:nth-last-child(-n+2) { border-bottom: none; }
     }
     @media (max-width: 560px) {
       .testimonials { padding: 48px 0; }
@@ -625,9 +625,9 @@
         <div class="testi-item-since">Client since 2016</div>
       </div>
       <div class="testi-item">
-        <p class="testi-item-quote">"Gabriel is an exceptional hairstylist. He consistently takes the time to listen to exactly what I’m looking for and always exceeds my expectations with the final result. His attention to detail, professionalism, and talent are outstanding. He is also friendly, personable, and creates a welcoming atmosphere that makes every appointment enjoyable. I have never left the salon disappointed and highly recommend him to anyone looking for a skilled and dedicated hairstylist. His work and personality are one of a kind!"</p>
+        <p class="testi-item-quote">"Gabriel is an exceptional hairstylist. He consistently takes the time to listen to exactly what I’m looking for and always exceeds my expectations with the final result. His attention to detail, professionalism, and talent are outstanding.<br><br>He is also friendly, personable, and creates a welcoming atmosphere that makes every appointment enjoyable. I have never left the salon disappointed and highly recommend him to anyone looking for a skilled and dedicated hairstylist. His work and personality are one of a kind!"</p>
         <div class="testi-item-author">Naomi V.</div>
-        <div class="testi-item-since">Client since 2024</div>
+        <div class="testi-item-since">Client since 2025</div>
       </div>
       <div class="testi-item">
         <p class="testi-item-quote">"I’ve been having my hair cut by Gabe for just under a year having gone to him about 3 or 4 times for my curly hair. He has worked with me each time to give me what I’m wanting out of the hair cut, even with each cut being different than the last. Not only does he work hard to give you the hair you’re hoping for but he also does a great job of creating a comfortable space to have your haircut or styled which I very much appreciate."</p>
@@ -638,6 +638,11 @@
         <p class="testi-item-quote">"Gabriel seriously is amazing, I won’t go to anyone else but him. He never cuts my hair too short but always keeps it healthy and long. I am always so happy with my hair when I leave and would recommend him for someone who’s nervous to get their hair cut. He knows his stuff!"</p>
         <div class="testi-item-author">Meagan M.</div>
         <div class="testi-item-since">Client since 2023</div>
+      </div>
+      <div class="testi-item">
+        <p class="testi-item-quote">"Over the last 2 years, Gabe has been my hairstylist; Gabe is not only a great hairstylist but a great person. Every time I sit in his chair for a haircut, I know I will not only get a great haircut but a great conversation.<br><br>Gabe is extremely hospitable, kind, and excellent at cutting/styling hair. Gabe adheres to requests and worked with me to find a style that suited me, as well as providing hospitality that made me want to go back to him every time for a haircut."</p>
+        <div class="testi-item-author">Yves D.</div>
+        <div class="testi-item-since">Client since 2024</div>
       </div>
       <div class="testi-item">
         <p class="testi-item-quote">"I came to Gabe with damaged hair after getting hair tie extensions from another stylist. Unfortunately, the extensions had caused significant damage to my hair. Gabe gave me an amazing haircut that instantly brought my hair back to life and I’ve been going to him ever since.<br><br>His cuts and color are always on point and I consistently leave feeling great about my hair. Gabe is incredibly talented, professional and easygoing making every appointment a great experience. I highly recommend him!"</p>
