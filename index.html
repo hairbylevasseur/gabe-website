@@ -548,7 +548,7 @@
       </div>
     </div>
     <div class="hero-right">
-      <video src="07242826-591B-49F8-A471-3F6058690FD7.MP4" autoplay muted loop playsinline></video>
+      <video src="07242826-591B-49F8-A471-3F6058690FD7.MP4" autoplay muted loop playsinline webkit-playsinline preload="auto"></video>
     </div>
   </section>
 
@@ -601,9 +601,9 @@
       <span class="section-label" style="margin-bottom:0">Reel</span>
     </div>
     <div class="reel-grid reveal">
-      <div class="reel-cell"><video src="motusagh-VIDEO-2026-05-05-18-24-00.mp4" autoplay muted loop playsinline></video></div>
-      <div class="reel-cell"><video src="motusakz-VIDEO-2026-05-05-18-25-28.mp4" autoplay muted loop playsinline></video></div>
-      <div class="reel-cell"><video src="motusaon-VIDEO-2026-05-05-18-34-26.mp4" autoplay muted loop playsinline></video></div>
+      <div class="reel-cell"><video src="motusagh-VIDEO-2026-05-05-18-24-00.mp4" autoplay muted loop playsinline webkit-playsinline preload="metadata"></video></div>
+      <div class="reel-cell"><video src="motusakz-VIDEO-2026-05-05-18-25-28.mp4" autoplay muted loop playsinline webkit-playsinline preload="metadata"></video></div>
+      <div class="reel-cell"><video src="motusaon-VIDEO-2026-05-05-18-34-26.mp4" autoplay muted loop playsinline webkit-playsinline preload="metadata"></video></div>
     </div>
   </section>
 
@@ -783,6 +783,33 @@
     });
   }, { threshold: 0.06, rootMargin: '0px 0px -24px 0px' });
   document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
+
+  /* ─── AUTOPLAY VIDEOS ───────────────────────────────────────────
+     Mobile browsers require videos to be muted and inline for autoplay.
+     Retry when each video is ready and when the page becomes visible again. */
+  (function() {
+    var videos = Array.from(document.querySelectorAll('video[autoplay]'));
+    if (!videos.length) return;
+
+    function start(video) {
+      video.muted = true;
+      video.defaultMuted = true;
+      var attempt = video.play();
+      if (attempt && typeof attempt.catch === 'function') attempt.catch(function() {});
+    }
+
+    videos.forEach(function(video) {
+      video.setAttribute('muted', '');
+      video.setAttribute('playsinline', '');
+      video.setAttribute('webkit-playsinline', '');
+      video.addEventListener('loadeddata', function() { start(video); }, { once: true });
+      start(video);
+    });
+
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden) videos.forEach(start);
+    });
+  })();
 
   (function() {
     const ring = document.getElementById('carouselRing');
