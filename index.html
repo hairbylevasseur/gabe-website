@@ -184,18 +184,20 @@
         justify-content: flex-end;
         min-height: 100svh;
       }
-      .hero-title { color: #111; }
-      .hero-title em { color: #777; }
-      .hero-lede { color: #000; font-weight: 600; }
-      .eyebrow { color: var(--accent); white-space: nowrap; font-size: clamp(9px, 3.2vw, 14px); letter-spacing: 0.1em; }
+      .hero-title { color: #F2EEE6; font-size: clamp(34px, 8.5vw, 50px); margin-bottom: 14px; }
+      .hero-title em { color: rgba(242,238,230,0.62); }
+      .hero-lede { color: #F2EEE6; font-weight: 500; }
+      .eyebrow { color: #F2EEE6; white-space: nowrap; font-size: clamp(9px, 3.2vw, 14px); letter-spacing: 0.1em; margin-bottom: 14px; line-height: 1.2; }
+      .eyebrow-name { color: var(--accent); }
+      .eyebrow-locations { margin-top: 5px; color: #F2EEE6; }
       .btn-ghost { border-color: rgba(255,255,255,0.35); color: #fff; }
       .btn-ghost:hover { border-color: rgba(255,255,255,0.7); }
     }
     @media (max-width: 480px) {
       .hero-left { padding: 0 20px 52px; }
-      .hero-title { font-size: clamp(36px, 9vw, 52px); margin-bottom: 16px; }
+      .hero-title { font-size: clamp(34px, 8.4vw, 48px); margin-bottom: 12px; }
       .hero-lede { font-size: 15px; margin-bottom: 28px; }
-      .eyebrow { margin-bottom: 18px; }
+      .eyebrow { margin-bottom: 12px; }
       .btn-primary, .btn-ghost { padding: 13px 22px; font-size: 13px; }
     }
 
@@ -555,7 +557,7 @@
 
   <section class="hero" id="hero" data-od-id="hero">
     <div class="hero-left">
-      <span class="eyebrow">Gabriel Le Vasseur · KINHOUSE, SoHo | NYC<span class="eyebrow-locations">NEW YORK CITY <span class="eyebrow-arrow">↔</span> LOS ANGELES</span></span>
+      <span class="eyebrow"><span class="eyebrow-name">Gabriel Le Vasseur</span> · KINHOUSE, SoHo | NYC<span class="eyebrow-locations">NEW YORK CITY <span class="eyebrow-arrow">↔</span> LOS ANGELES</span></span>
       <h1 class="hero-title reveal">The art of hair,<br><em>refined.</em></h1>
       <p class="hero-lede reveal">Every cut is a conversation. Gabriel brings precision craftsmanship and a quiet eye for artistry to each session — transforming the ordinary into something you'll want to show off.</p>
       <div class="hero-actions reveal">
