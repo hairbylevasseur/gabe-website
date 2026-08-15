@@ -85,7 +85,8 @@
       .nav-links {
         display: none; position: absolute; top: calc(100% + 8px); left: 0; right: 0;
         flex-direction: column; gap: 0; padding: 8px;
-        background: rgba(251,250,247,0.97); border: 1px solid var(--hairline);
+        background: rgba(251,250,247,0.78); backdrop-filter: saturate(140%) blur(14px);
+        -webkit-backdrop-filter: saturate(140%) blur(14px); border: 1px solid rgba(232,229,223,0.8);
         border-radius: 18px; box-shadow: 0 14px 30px rgba(26,25,23,0.12);
       }
       .nav-links.is-open { display: flex; }
