@@ -832,7 +832,6 @@
     if (!ring) return;
     const stage = ring.closest('.carousel-stage') || ring.parentElement;
     let rotation = 0;
-    let lastScrollY = window.scrollY;
     let dragging = false;
     let lastPointerX = 0;
     function tick() {
@@ -840,15 +839,6 @@
       ring.style.transform = 'rotateY(' + rotation + 'deg)';
       requestAnimationFrame(tick);
     }
-    window.addEventListener('scroll', function() {
-      if (window.matchMedia('(max-width: 820px)').matches) {
-        lastScrollY = window.scrollY;
-        return;
-      }
-      var delta = window.scrollY - lastScrollY;
-      rotation += delta * 0.25;
-      lastScrollY = window.scrollY;
-    }, { passive: true });
     stage.addEventListener('pointerdown', function(e) {
       dragging = true;
       lastPointerX = e.clientX;
@@ -860,6 +850,14 @@
       lastPointerX = e.clientX;
       ring.style.transform = 'rotateY(' + rotation + 'deg)';
       e.preventDefault();
+    }, { passive: false });
+    stage.addEventListener('wheel', function(e) {
+      if (window.matchMedia('(max-width: 820px)').matches) return;
+      var delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      if (!delta) return;
+      e.preventDefault();
+      rotation += delta * 0.28;
+      ring.style.transform = 'rotateY(' + rotation + 'deg)';
     }, { passive: false });
     function stopDragging(e) {
       if (!dragging) return;
