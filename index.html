@@ -485,7 +485,7 @@
     .booking-form { background: var(--surface); border: 1px solid var(--hairline); padding: 40px; }
     .form-title { font-family: var(--display); font-size: 26px; letter-spacing: -0.015em; font-weight: 400; margin-bottom: 4px; }
     .form-sub { font-size: 13.5px; color: var(--muted); margin-bottom: 28px; }
-    .form-private-note { font-size: 13px; line-height: 1.6; color: var(--muted); margin: -10px 0 28px; }
+    .form-private-note { font-size: 13px; line-height: 1.6; color: var(--muted); margin: 8px 0 28px; }
     .form-private-note a { color: var(--ink); font-weight: 600; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
@@ -755,7 +755,6 @@
 
       <div class="booking-form reveal" data-od-id="booking-form">
         <h3 class="form-title">Request an appointment</h3>
-        <p class="form-sub">We'll confirm within 24 hours.</p>
         <p class="form-private-note">This form is reserved exclusively for private clientele and personal referrals. For general appointments, please visit <a href="https://na2.meevo.com/CustomerPortal/onlinebooking/booking/guestinfo?tenantId=502005&amp;locationId=502642" target="_blank" rel="noopener noreferrer">KINHOUSE SOHO</a>.</p>
         <!-- Posts to Web3Forms, which emails the booking to contact@hairbylevasseur.com.
              The action/method work on their own if JavaScript fails; the script below
@@ -773,15 +772,12 @@
             <input type="checkbox" id="botcheck" name="botcheck" tabindex="-1" autocomplete="off"/>
           </div>
 
-          <div class="form-row">
-            <div class="form-group"><label for="fname">First name</label><input type="text" id="fname" name="First name" autocomplete="given-name" required/></div>
-            <div class="form-group"><label for="lname">Last name</label><input type="text" id="lname" name="Last name" autocomplete="family-name" required/></div>
-          </div>
+          <div class="form-group"><label for="name">Full name</label><input type="text" id="name" name="Full name" autocomplete="name" required/></div>
           <div class="form-group"><label for="email">Email address</label><input type="email" id="email" name="email" autocomplete="email" required/></div>
-          <div class="form-group"><label for="phone">Phone number</label><input type="tel" id="phone" name="Phone" autocomplete="tel"/></div>
-          <div class="form-group"><label for="service">Service</label><input type="text" id="service" name="Service" autocomplete="off" required/></div>
-          <div class="form-group"><label for="preferred">Preferred date or time</label><input type="text" id="preferred" name="Preferred date or time"/></div>
-          <div class="form-group"><label for="message">Anything else?</label><textarea id="message" name="Message"></textarea></div>
+          <div class="form-group"><label for="service">Service requested</label><input type="text" id="service" name="Service requested" autocomplete="off" required/></div>
+          <div class="form-group"><label for="preferred">Preferred date and time</label><input type="text" id="preferred" name="Preferred date and time"/></div>
+          <div class="form-group"><label for="referral">Referral name (optional)</label><input type="text" id="referral" name="Referral name" autocomplete="name"/></div>
+          <div class="form-group"><label for="message">Private notes / requests</label><textarea id="message" name="Private notes / requests"></textarea></div>
           <button type="submit" class="form-submit">Send request</button>
           <!-- role=status makes screen readers announce the result without stealing focus. -->
           <p class="form-status" id="formStatus" role="status" aria-live="polite" hidden></p>
@@ -943,10 +939,10 @@
       var data = Object.fromEntries(new FormData(form));
 
       // A more useful subject line than a generic one, built from the request.
-      var who = [data['First name'], data['Last name']].filter(Boolean).join(' ').trim();
+      var who = (data['Full name'] || '').trim();
       data.subject = 'Appointment request' +
                      (who ? ' — ' + who : '') +
-                     (data.Service ? ' (' + data.Service + ')' : '');
+                     (data['Service requested'] ? ' (' + data['Service requested'] + ')' : '');
 
       btn.disabled = true;
       btn.textContent = 'Sending…';
