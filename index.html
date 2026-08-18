@@ -417,6 +417,7 @@
       color: #C8C3BC;
       margin-top: 3px;
     }
+    .testi-toggle { display: none; }
     @media (max-width: 820px) {
       .testimonials { padding: 64px 20px; }
       .testi-grid { grid-template-columns: 1fr 1fr; }
@@ -434,6 +435,15 @@
       .testi-item { border-right: none !important; border-bottom: 1px solid var(--hairline) !important; }
       .testi-item:last-child { border-bottom: none !important; }
       .testi-item { padding: 28px 20px 28px 28px; }
+      .testi-item-quote { max-height: 5.1em; overflow: hidden; margin-bottom: 10px; transition: max-height 0.28s ease; }
+      .testi-item.is-open .testi-item-quote { max-height: 60em; }
+      .testi-toggle {
+        display: inline-flex; align-items: center; gap: 7px; padding: 0;
+        margin: 0 0 18px; border: 0; background: transparent; color: var(--muted);
+        font: 500 10px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer;
+      }
+      .testi-toggle::after { content: '↓'; font-size: 13px; transition: transform 0.2s ease; }
+      .testi-item.is-open .testi-toggle::after { transform: rotate(180deg); }
     }
 
     /* ─── PRESS ─── */
@@ -908,6 +918,26 @@
         toggle.setAttribute('aria-expanded', 'false');
         toggle.setAttribute('aria-label', 'Open navigation menu');
       }
+    });
+  })();
+
+  /* ─── MOBILE REVIEW ACCORDION ────────────────────────────────── */
+  (function() {
+    if (!window.matchMedia('(max-width: 560px)').matches) return;
+    document.querySelectorAll('.testi-item').forEach(function(item) {
+      var quote = item.querySelector('.testi-item-quote');
+      if (!quote) return;
+      var toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'testi-toggle';
+      toggle.textContent = 'Read full review';
+      toggle.setAttribute('aria-expanded', 'false');
+      quote.insertAdjacentElement('afterend', toggle);
+      toggle.addEventListener('click', function() {
+        var open = item.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.textContent = open ? 'Close review' : 'Read full review';
+      });
     });
   })();
 
