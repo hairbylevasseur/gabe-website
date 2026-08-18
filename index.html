@@ -445,6 +445,8 @@
       }
       .testi-toggle::after { content: '↓'; font-size: 13px; transition: transform 0.2s ease; }
       .testi-item.is-open .testi-toggle::after { transform: rotate(180deg); }
+      .testi-item:first-child .testi-item-quote { max-height: none; }
+      .testi-item:first-child .testi-toggle { display: none; }
     }
 
     /* ─── PRESS ─── */
