@@ -117,17 +117,24 @@
         border-radius: 999px; background: transparent; color: var(--ink); cursor: pointer;
       }
       .nav-menu-toggle svg { width: 17px; height: 17px; }
+      /* How much page flow the sticky nav pill occupies (top margin + pill
+         height) at this breakpoint. The hero pulls itself up by this amount.
+         Slightly generous on purpose: the cover-cropped video hides an
+         overshoot, while an undershoot shows a cream strip above it. */
+      :root { --nav-flow: 76px; }
     }
     @media (max-width: 480px) {
       .nav { margin: 8px 12px 0; top: 8px; }
       .nav-brand { font-size: 20px; letter-spacing: 0; }
       .nav-private-mobile { font-size: 11px; }
       .nav-cta { padding: 9px 12px; font-size: 11px; }
+      :root { --nav-flow: 64px; }
     }
     @media (max-width: 390px) {
       .nav { padding: 8px 8px 8px 12px; gap: 6px; }
       .nav-brand { font-size: 16px; }
       .nav-menu-toggle { width: 34px; height: 30px; }
+      :root { --nav-flow: 56px; }
     }
 
     /* ─── HERO ─── */
@@ -190,6 +197,11 @@
         grid-template-columns: 1fr;
         min-height: 100svh;
         position: relative;
+        /* The sticky nav occupies --nav-flow of page flow at this
+           breakpoint. Pull the hero up by that amount so the video starts
+           at the very top of the screen (running behind the translucent
+           nav pill) and the booking button stays above the fold. */
+        margin-top: calc(-1 * var(--nav-flow));
       }
       .hero-right {
         position: absolute;
@@ -199,19 +211,26 @@
         z-index: 0;
       }
       /* Bottom scrim: keeps the overlaid title readable no matter how
-         light the video frame behind it happens to be. */
+         light the video frame behind it happens to be. Masked at the very
+         bottom so scrim and video dissolve into the page together. */
       .hero-right::after {
-        background: linear-gradient(to top, rgba(20,18,15,0.78) 0%, rgba(20,18,15,0.38) 26%, transparent 52%);
+        background: linear-gradient(to top, rgba(20,18,15,0.82) 0%, rgba(20,18,15,0.55) 32%, transparent 62%);
+        -webkit-mask-image: linear-gradient(to top, transparent 0, #000 48px);
+        mask-image: linear-gradient(to top, transparent 0, #000 48px);
       }
       .hero-right::before { display: none; }
+      /* Fill the whole first screen (cropping the video's edges) instead
+         of letterboxing it, and fade the last 48px into the page so the
+         scroll out of the hero feels soft rather than a hard cut. */
       .hero-right img, .hero-right video {
-        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 14%);
-        mask-image: linear-gradient(to bottom, transparent 0%, #000 14%);
+        object-fit: cover;
+        -webkit-mask-image: linear-gradient(to top, transparent 0, #000 48px);
+        mask-image: linear-gradient(to top, transparent 0, #000 48px);
       }
       .hero + .section-rule { display: none; }
       .hero-left {
         position: relative; z-index: 2;
-        padding: 0 28px 34px;
+        padding: 0 28px 56px;
         justify-content: flex-end;
         min-height: 100svh;
       }
@@ -226,7 +245,7 @@
       .btn-ghost:hover { border-color: rgba(255,255,255,0.7); }
     }
     @media (max-width: 480px) {
-      .hero-left { padding: 0 20px 28px; }
+      .hero-left { padding: 0 20px 48px; }
       .hero-title { font-size: clamp(34px, 8.4vw, 48px); margin-bottom: 12px; }
       .hero-lede { font-size: 15px; margin-bottom: 28px; }
       .eyebrow { margin-bottom: 12px; }
@@ -236,7 +255,13 @@
     /* ─── ABOUT ─── */
     .about { padding: 96px 0; }
     .about-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; align-items: start; }
-    .about-img-wrap img { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; }
+    /* The photo dissolves into the page at its edges (same visual language
+       as the hero video mask) instead of sitting as a hard rectangle. */
+    .about-img-wrap img {
+      width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block;
+      -webkit-mask-image: radial-gradient(115% 115% at 50% 42%, #000 52%, transparent 97%);
+      mask-image: radial-gradient(115% 115% at 50% 42%, #000 52%, transparent 97%);
+    }
     .about-img-cap { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 14px; }
     .about-title {
       font-family: var(--display);
@@ -246,12 +271,16 @@
     .about-title em { font-style: italic; }
     .about-body p { font-size: 16px; line-height: 1.78; color: var(--muted); margin-bottom: 18px; max-width: 56ch; }
     @media (max-width: 820px) {
-      .about { padding: 64px 20px; }
-      .about-grid { grid-template-columns: 1fr; gap: 32px; }
+      .about { padding: 40px 20px 64px; }
+      .about-grid { grid-template-columns: 1fr; gap: 0; }
       .about-img-wrap img { aspect-ratio: auto; height: auto; object-fit: contain; }
+      /* The heading overlaps the faded bottom of the photo so the section
+         reads image-first instead of text-heavy. */
+      .about-body { position: relative; z-index: 1; margin-top: -76px; }
+      .about-p-extra { display: none; }
     }
     @media (max-width: 480px) {
-      .about { padding: 48px 20px; }
+      .about { padding: 40px 20px 56px; }
       .about-title { font-size: clamp(32px, 8.4vw, 48px); }
       .about-body p { font-size: 15px; }
     }
@@ -391,81 +420,70 @@
       .service-price { font-size: 19px; }
     }
 
-    /* ─── TESTIMONIALS — editorial grid ─── */
+    /* ─── TESTIMONIALS — auto-scrolling review marquee ───
+       Two rows drift in opposite directions. Each track holds its three
+       reviews twice; the keyframes slide exactly one copy's width, so the
+       loop is seamless. The duplicate copy is aria-hidden so screen
+       readers hear each review once. */
     .testimonials { padding: 96px 0; background: var(--canvas); }
     .testimonials .section-label { color: var(--accent); }
     .testi-heading {
       font-family: var(--display); font-size: clamp(30px, 3.5vw, 50px);
       letter-spacing: -0.025em; font-weight: 400; color: var(--ink);
-      max-width: 24ch; margin-bottom: 56px; line-height: 1.06;
+      max-width: 24ch; margin-bottom: 48px; line-height: 1.06;
     }
     .testi-heading em { font-style: italic; color: var(--muted); }
-    .testi-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      border: 1px solid var(--hairline);
+    .testi-marquee { position: relative; overflow: hidden; display: grid; gap: 16px; }
+    /* Soft fades at both edges so cards dissolve in and out of the page. */
+    .testi-marquee::before, .testi-marquee::after {
+      content: ''; position: absolute; top: 0; bottom: 0;
+      width: clamp(40px, 8vw, 140px); z-index: 2; pointer-events: none;
     }
-    .testi-item {
-      padding: 36px 32px;
-      border-right: 1px solid var(--hairline);
-      border-bottom: 1px solid var(--hairline);
-      position: relative;
+    .testi-marquee::before { left: 0; background: linear-gradient(to right, var(--canvas), transparent); }
+    .testi-marquee::after  { right: 0; background: linear-gradient(to left, var(--canvas), transparent); }
+    .testi-row { overflow: hidden; }
+    .testi-track { display: flex; width: max-content; }
+    .testi-group { display: flex; }
+    .testi-track-a { animation: testi-drift-right 46s linear infinite; }
+    .testi-track-b { animation: testi-drift-left 58s linear infinite; }
+    .testi-row:hover .testi-track { animation-play-state: paused; }
+    @keyframes testi-drift-left  { from { transform: translateX(0); }    to { transform: translateX(-50%); } }
+    @keyframes testi-drift-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+    .testi-card {
+      width: 340px; flex-shrink: 0; margin-right: 16px;
+      background: var(--surface);
+      border: 1px solid var(--hairline); border-left: 2px solid var(--accent);
+      padding: 26px 28px;
     }
-    .testi-item:nth-child(3n) { border-right: none; }
-    .testi-item:nth-last-child(-n+3) { border-bottom: none; }
-    .testi-item::before {
-      content: '';
-      position: absolute; left: 0; top: 36px; bottom: 36px;
-      width: 2px; background: var(--accent);
-    }
-    .testi-item-quote {
+    .testi-card blockquote {
       font-family: var(--display); font-style: italic;
-      font-size: clamp(15px, 1.6vw, 18px);
-      line-height: 1.6; color: var(--ink);
-      margin-bottom: 24px;
+      font-size: 17px; line-height: 1.55; color: var(--ink);
+      margin-bottom: 18px;
     }
-    .testi-item-author {
+    .testi-card figcaption {
       font-family: var(--mono); font-size: 10.5px;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--muted);
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
     }
-    .testi-item-since {
-      font-family: var(--mono); font-size: 10px;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--hairline); /* extra muted */
-      color: #C8C3BC;
-      margin-top: 3px;
+    .testi-card figcaption span {
+      display: block; font-size: 10px; letter-spacing: 0.1em;
+      color: #C8C3BC; margin-top: 3px;
     }
-    .testi-toggle { display: none; }
     @media (max-width: 820px) {
-      .testimonials { padding: 64px 20px; }
-      .testi-grid { grid-template-columns: 1fr 1fr; }
-      .testi-heading { margin-bottom: 40px; }
-      .testi-item:nth-child(3n) { border-right: 1px solid var(--hairline); }
-      .testi-item:nth-child(2n) { border-right: none; }
-      .testi-item:nth-child(4),
-      .testi-item:nth-child(5) { border-bottom: 1px solid var(--hairline); }
-      .testi-item:nth-child(3) { border-bottom: 1px solid var(--hairline); }
-      .testi-item:nth-last-child(-n+2) { border-bottom: none; }
+      .testimonials { padding: 64px 0; }
+      .testi-heading { margin-bottom: 32px; }
+      .testi-marquee { gap: 12px; }
+      .testi-card { width: 270px; padding: 20px 22px; margin-right: 12px; }
+      .testi-card blockquote { font-size: 15px; }
     }
-    @media (max-width: 560px) {
-      .testimonials { padding: 48px 20px; }
-      .testi-grid { grid-template-columns: 1fr; }
-      .testi-item { border-right: none !important; border-bottom: 1px solid var(--hairline) !important; }
-      .testi-item:last-child { border-bottom: none !important; }
-      .testi-item { padding: 28px 20px 28px 28px; }
-      .testi-item-quote { max-height: 5.1em; overflow: hidden; margin-bottom: 10px; transition: max-height 0.28s ease; }
-      .testi-item.is-open .testi-item-quote { max-height: 60em; }
-      .testi-toggle {
-        display: inline-flex; align-items: center; gap: 7px; padding: 0;
-        margin: 0 0 18px; border: 0; background: transparent; color: var(--muted);
-        font: 500 10px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer;
-      }
-      .testi-toggle::after { content: '↓'; font-size: 13px; transition: transform 0.2s ease; }
-      .testi-item.is-open .testi-toggle::after { transform: rotate(180deg); }
-      .testi-item:first-child .testi-item-quote { max-height: none; }
-      .testi-item:first-child .testi-toggle { display: none; }
+    /* Reduced motion: no animation — reviews sit as a static wrapped list
+       and the duplicate copies disappear. */
+    @media (prefers-reduced-motion: reduce) {
+      .testi-track { animation: none !important; width: auto; flex-wrap: wrap; gap: 12px; }
+      .testi-group { flex-wrap: wrap; gap: 12px; }
+      .testi-group[aria-hidden="true"] { display: none; }
+      .testi-marquee::before, .testi-marquee::after { display: none; }
+      .testi-marquee { padding: 0 20px; }
+      .testi-card { margin-right: 0; }
     }
 
     /* ─── PRESS ─── */
@@ -630,7 +648,7 @@
         <h2 class="about-title">Precision craft,<br><em>personal touch.</em></h2>
         <p>Gabriel is a hairstylist specializing in both women's and men's cutting and coloring. Born and raised in Ventura, California, he began his career as a barber, where he developed a strong foundation in precision cutting.</p>
         <p>As his craft evolved, Gabriel expanded into women's hairstyling, discovering a deeper passion for the creativity, artistry, and technical skill it allows him to express. Today, he works at KINHOUSE in SoHo, NYC.</p>
-        <p>His philosophy: hair should move with you, not against you. Every session starts with a real conversation about your lifestyle, your texture, how much time you want to spend in the mirror each morning.</p>
+        <p class="about-p-extra">His philosophy: hair should move with you, not against you. Every session starts with a real conversation about your lifestyle, your texture, how much time you want to spend in the mirror each morning.</p>
       </div>
     </div>
   </section>
@@ -675,39 +693,75 @@
 
   <hr class="section-rule">
 
-  <section class="testimonials wrap" id="testimonials" data-od-id="testimonials">
-    <span class="section-label">Client reviews</span>
-    <h2 class="testi-heading reveal">What <em>they say.</em></h2>
-    <div class="testi-grid reveal">
-      <div class="testi-item">
-        <p class="testi-item-quote">"Been seeing Gabe for close to a decade now. This man always shows out and puts some serious dedication to his craft. I’ve never come to him with a request that he cannot do."</p>
-        <div class="testi-item-author">Jacob Y.</div>
-        <div class="testi-item-since">Client since 2016</div>
+  <section class="testimonials" id="testimonials" data-od-id="testimonials">
+    <div class="wrap">
+      <span class="section-label">Client reviews</span>
+      <h2 class="testi-heading reveal">What <em>they say.</em></h2>
+    </div>
+    <div class="testi-marquee reveal">
+      <div class="testi-row">
+        <div class="testi-track testi-track-a">
+          <div class="testi-group">
+            <figure class="testi-card">
+              <blockquote>"Been seeing Gabe for close to a decade now. I’ve never come to him with a request that he cannot do."</blockquote>
+              <figcaption>Jacob Y. <span>Client since 2016</span></figcaption>
+            </figure>
+            <figure class="testi-card">
+              <blockquote>"He consistently takes the time to listen to exactly what I’m looking for and always exceeds my expectations. His work and personality are one of a kind!"</blockquote>
+              <figcaption>Naomi V. <span>Client since 2025</span></figcaption>
+            </figure>
+            <figure class="testi-card">
+              <blockquote>"He has worked with me each time to give me what I’m wanting out of the hair cut, even with each cut being different than the last."</blockquote>
+              <figcaption>Alphie P. <span>Client since 2025</span></figcaption>
+            </figure>
+          </div>
+          <div class="testi-group" aria-hidden="true">
+            <figure class="testi-card">
+              <blockquote>"Been seeing Gabe for close to a decade now. I’ve never come to him with a request that he cannot do."</blockquote>
+              <figcaption>Jacob Y. <span>Client since 2016</span></figcaption>
+            </figure>
+            <figure class="testi-card">
+              <blockquote>"He consistently takes the time to listen to exactly what I’m looking for and always exceeds my expectations. His work and personality are one of a kind!"</blockquote>
+              <figcaption>Naomi V. <span>Client since 2025</span></figcaption>
+            </figure>
+            <figure class="testi-card">
+              <blockquote>"He has worked with me each time to give me what I’m wanting out of the hair cut, even with each cut being different than the last."</blockquote>
+              <figcaption>Alphie P. <span>Client since 2025</span></figcaption>
+            </figure>
+          </div>
+        </div>
       </div>
-      <div class="testi-item">
-        <p class="testi-item-quote">"Gabriel is an exceptional hairstylist. He consistently takes the time to listen to exactly what I’m looking for and always exceeds my expectations with the final result. His attention to detail, professionalism, and talent are outstanding.<br><br>He is also friendly, personable, and creates a welcoming atmosphere that makes every appointment enjoyable. I have never left the salon disappointed and highly recommend him to anyone looking for a skilled and dedicated hairstylist. His work and personality are one of a kind!"</p>
-        <div class="testi-item-author">Naomi V.</div>
-        <div class="testi-item-since">Client since 2025</div>
-      </div>
-      <div class="testi-item">
-        <p class="testi-item-quote">"I’ve been having my hair cut by Gabe for just under a year having gone to him about 3 or 4 times for my curly hair. He has worked with me each time to give me what I’m wanting out of the hair cut, even with each cut being different than the last. Not only does he work hard to give you the hair you’re hoping for but he also does a great job of creating a comfortable space to have your haircut or styled which I very much appreciate."</p>
-        <div class="testi-item-author">Alphie P.</div>
-        <div class="testi-item-since">Client since 2025</div>
-      </div>
-      <div class="testi-item">
-        <p class="testi-item-quote">"Gabriel seriously is amazing, I won’t go to anyone else but him. He never cuts my hair too short but always keeps it healthy and long. I am always so happy with my hair when I leave and would recommend him for someone who’s nervous to get their hair cut. He knows his stuff!"</p>
-        <div class="testi-item-author">Meagan M.</div>
-        <div class="testi-item-since">Client since 2023</div>
-      </div>
-      <div class="testi-item">
-        <p class="testi-item-quote">"Over the last 2 years, Gabe has been my hairstylist; Gabe is not only a great hairstylist but a great person. Every time I sit in his chair for a haircut, I know I will not only get a great haircut but a great conversation.<br><br>Gabe is extremely hospitable, kind, and excellent at cutting/styling hair. Gabe adheres to requests and worked with me to find a style that suited me, as well as providing hospitality that made me want to go back to him every time for a haircut."</p>
-        <div class="testi-item-author">Yves D.</div>
-        <div class="testi-item-since">Client since 2024</div>
-      </div>
-      <div class="testi-item">
-        <p class="testi-item-quote">"I came to Gabe with damaged hair after getting hair tie extensions from another stylist. Unfortunately, the extensions had caused significant damage to my hair. Gabe gave me an amazing haircut that instantly brought my hair back to life and I’ve been going to him ever since.<br><br>His cuts and color are always on point and I consistently leave feeling great about my hair. Gabe is incredibly talented, professional and easygoing making every appointment a great experience. I highly recommend him!"</p>
-        <div class="testi-item-author">Veronica W.</div>
-        <div class="testi-item-since">Client since 2017</div>
+      <div class="testi-row">
+        <div class="testi-track testi-track-b">
+          <div class="testi-group">
+            <figure class="testi-card">
+              <blockquote>"He never cuts my hair too short but always keeps it healthy and long. I would recommend him for someone who’s nervous to get their hair cut."</blockquote>
+              <figcaption>Meagan M. <span>Client since 2023</span></figcaption>
+            </figure>
+            <figure class="testi-card">
+              <blockquote>"Every time I sit in his chair for a haircut, I know I will not only get a great haircut but a great conversation."</blockquote>
+              <figcaption>Yves D. <span>Client since 2024</span></figcaption>
+            </figure>
+            <figure class="testi-card">
+              <blockquote>"Gabe gave me an amazing haircut that instantly brought my hair back to life and I’ve been going to him ever since."</blockquote>
+              <figcaption>Veronica W. <span>Client since 2017</span></figcaption>
+            </figure>
+          </div>
+          <div class="testi-group" aria-hidden="true">
+            <figure class="testi-card">
+              <blockquote>"He never cuts my hair too short but always keeps it healthy and long. I would recommend him for someone who’s nervous to get their hair cut."</blockquote>
+              <figcaption>Meagan M. <span>Client since 2023</span></figcaption>
+            </figure>
+            <figure class="testi-card">
+              <blockquote>"Every time I sit in his chair for a haircut, I know I will not only get a great haircut but a great conversation."</blockquote>
+              <figcaption>Yves D. <span>Client since 2024</span></figcaption>
+            </figure>
+            <figure class="testi-card">
+              <blockquote>"Gabe gave me an amazing haircut that instantly brought my hair back to life and I’ve been going to him ever since."</blockquote>
+              <figcaption>Veronica W. <span>Client since 2017</span></figcaption>
+            </figure>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -939,26 +993,6 @@
         toggle.setAttribute('aria-expanded', 'false');
         toggle.setAttribute('aria-label', 'Open navigation menu');
       }
-    });
-  })();
-
-  /* ─── MOBILE REVIEW ACCORDION ────────────────────────────────── */
-  (function() {
-    if (!window.matchMedia('(max-width: 820px)').matches) return;
-    document.querySelectorAll('.testi-item').forEach(function(item) {
-      var quote = item.querySelector('.testi-item-quote');
-      if (!quote) return;
-      var toggle = document.createElement('button');
-      toggle.type = 'button';
-      toggle.className = 'testi-toggle';
-      toggle.textContent = 'Read full review';
-      toggle.setAttribute('aria-expanded', 'false');
-      quote.insertAdjacentElement('afterend', toggle);
-      toggle.addEventListener('click', function() {
-        var open = item.classList.toggle('is-open');
-        toggle.setAttribute('aria-expanded', String(open));
-        toggle.textContent = open ? 'Close review' : 'Read full review';
-      });
     });
   })();
 
