@@ -5,20 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Gabriel Le Vasseur | Precision Haircuts &amp; Color in New York City and Ventura, CA</title>
   <meta name="description" content="Gabriel Le Vasseur — Precision haircuts and color in New York City and Ventura, California." />
-
-  <!-- Social sharing preview (iMessage, Instagram, WhatsApp, etc.).
-       og:image must be a full URL, so it assumes the site lives at
-       hairbylevasseur.com — update if the site is hosted elsewhere. -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Hair by Le Vasseur" />
-  <meta property="og:description" content="Gabriel Le Vasseur — precision cutting and coloring at KINHOUSE, SoHo NYC. Book an appointment." />
-  <meta property="og:url" content="https://hairbylevasseur.com/" />
-  <meta property="og:image" content="https://hairbylevasseur.com/cutting-ava.jpg" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <!-- Browser-tab icon: gold LV monogram on the site's ink color. -->
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231A1917'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-style='italic' font-size='30' fill='%23C4A45A' text-anchor='middle'%3ELV%3C/text%3E%3C/svg%3E" />
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -79,9 +65,10 @@
     }
     .nav-brand { font-family: var(--display); font-size: 26px; letter-spacing: 0.02em; color: var(--ink); text-decoration: none; white-space: nowrap; }
     .nav-brand em { font-style: italic; color: var(--accent); }
-    .nav-links { list-style: none; display: flex; gap: 18px; }
+    .nav-links { list-style: none; display: flex; gap: 18px; min-width: 0; }
     .nav-links a { color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.18s; }
     .nav-links a:hover { color: var(--ink); }
+    .nav-links li { flex: 0 0 auto; }
     .nav-cta {
       font: 500 13px/1 var(--sans); padding: 9px 18px; border-radius: 999px;
       background: #F5EDE2; color: var(--ink); border: 1px solid var(--accent); cursor: pointer;
@@ -117,24 +104,17 @@
         border-radius: 999px; background: transparent; color: var(--ink); cursor: pointer;
       }
       .nav-menu-toggle svg { width: 17px; height: 17px; }
-      /* How much page flow the sticky nav pill occupies (top margin + pill
-         height) at this breakpoint. The hero pulls itself up by this amount.
-         Slightly generous on purpose: the cover-cropped video hides an
-         overshoot, while an undershoot shows a cream strip above it. */
-      :root { --nav-flow: 76px; }
     }
     @media (max-width: 480px) {
       .nav { margin: 8px 12px 0; top: 8px; }
       .nav-brand { font-size: 20px; letter-spacing: 0; }
       .nav-private-mobile { font-size: 11px; }
       .nav-cta { padding: 9px 12px; font-size: 11px; }
-      :root { --nav-flow: 64px; }
     }
     @media (max-width: 390px) {
       .nav { padding: 8px 8px 8px 12px; gap: 6px; }
       .nav-brand { font-size: 16px; }
       .nav-menu-toggle { width: 34px; height: 30px; }
-      :root { --nav-flow: 56px; }
     }
 
     /* ─── HERO ─── */
@@ -150,7 +130,9 @@
       font-family: var(--mono); font-size: 14px; font-weight: 500; letter-spacing: 0.18em;
       text-transform: uppercase; color: var(--accent); margin-bottom: 28px;
     }
-    .eyebrow-locations { display: block; margin-top: 9px; font-size: 13px; letter-spacing: 0.18em; }
+    .eyebrow-locations {
+      display: block; margin-top: 9px; font-size: 13px; letter-spacing: 0.18em;
+    }
     .eyebrow-arrow { display: inline-block; font-size: 1.35em; line-height: 0; vertical-align: -0.08em; margin: 0 0.08em; }
     .hero-title {
       font-family: var(--display);
@@ -160,9 +142,9 @@
     }
     .hero-title em { font-style: italic; color: var(--muted); }
     .hero-lede { display: none; font-size: 17px; color: var(--muted); max-width: 46ch; line-height: 1.68; margin-bottom: 40px; order: 3; }
-    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
     .eyebrow { order: 2; }
     .hero-actions { order: 4; }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
     .btn-primary, .btn-ghost {
       font: 500 14px/1 var(--sans); padding: 14px 26px; border-radius: 6px;
       cursor: pointer; text-decoration: none; display: inline-block;
@@ -200,11 +182,6 @@
         height: 100svh;
         min-height: 100svh;
         position: relative;
-        /* The sticky nav occupies --nav-flow of page flow at this
-           breakpoint. Pull the hero up by that amount so the video starts
-           at the very top of the screen (running behind the translucent
-           nav pill) and the booking button stays above the fold. */
-        margin-top: calc(-1 * var(--nav-flow));
       }
       .hero-right {
         position: absolute;
@@ -213,27 +190,18 @@
         max-height: unset;
         z-index: 0;
       }
-      /* Bottom scrim: keeps the overlaid title readable no matter how
-         light the video frame behind it happens to be. Masked at the very
-         bottom so scrim and video dissolve into the page together. */
-      .hero-right::after {
-        background: linear-gradient(to top, rgba(20,18,15,0.82) 0%, rgba(20,18,15,0.55) 32%, transparent 62%);
-        -webkit-mask-image: linear-gradient(to top, transparent 0, #000 48px);
-        mask-image: linear-gradient(to top, transparent 0, #000 48px);
+      .hero-right::after { display: none; }
+      .hero-right::before {
+        display: none;
       }
-      .hero-right::before { display: none; }
-      /* Fill the whole first screen (cropping the video's edges) instead
-         of letterboxing it, and fade the last 48px into the page so the
-         scroll out of the hero feels soft rather than a hard cut. */
       .hero-right img, .hero-right video {
-        object-fit: cover;
-        -webkit-mask-image: linear-gradient(to top, transparent 0, #000 48px);
-        mask-image: linear-gradient(to top, transparent 0, #000 48px);
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 14%);
+        mask-image: linear-gradient(to bottom, transparent 0%, #000 14%);
       }
       .hero + .section-rule { display: none; }
       .hero-left {
         position: relative; z-index: 2;
-        padding: 0 28px 56px;
+        padding: 0 28px 34px;
         justify-content: flex-end;
         min-height: 100svh;
       }
@@ -244,15 +212,16 @@
       .hero-actions { order: 3; }
       .hero-lede { color: #F2EEE6; font-weight: 500; }
       .hero-lede { display: none; }
-      .eyebrow { color: #F2EEE6; white-space: nowrap; font-size: clamp(9px, 3.2vw, 14px); letter-spacing: 0.1em; margin-bottom: 14px; line-height: 1.2; }
+      .eyebrow { color: #F2EEE6; margin-bottom: 14px; line-height: 1.2; }
       .eyebrow-name { color: var(--accent); }
-      .btn-primary { border-width: 2px; }
       .eyebrow-locations { margin-top: 5px; color: #F2EEE6; }
+      .eyebrow { white-space: nowrap; font-size: clamp(9px, 3.2vw, 14px); letter-spacing: 0.1em; }
+      .btn-primary { border-width: 2px; }
       .btn-ghost { border-color: rgba(255,255,255,0.35); color: #fff; }
       .btn-ghost:hover { border-color: rgba(255,255,255,0.7); }
     }
     @media (max-width: 480px) {
-      .hero-left { padding: 0 20px 48px; }
+      .hero-left { padding: 0 20px 28px; }
       .hero-title { font-size: clamp(34px, 8.4vw, 48px); margin-bottom: 12px; }
       .hero-lede { font-size: 15px; margin-bottom: 28px; }
       .eyebrow { margin-bottom: 12px; }
@@ -262,13 +231,7 @@
     /* ─── ABOUT ─── */
     .about { padding: 96px 0; }
     .about-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; align-items: start; }
-    /* The photo dissolves into the page at its edges (same visual language
-       as the hero video mask) instead of sitting as a hard rectangle. */
-    .about-img-wrap img {
-      width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block;
-      -webkit-mask-image: radial-gradient(115% 115% at 50% 42%, #000 52%, transparent 97%);
-      mask-image: radial-gradient(115% 115% at 50% 42%, #000 52%, transparent 97%);
-    }
+    .about-img-wrap img { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; }
     .about-img-cap { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 14px; }
     .about-title {
       font-family: var(--display);
@@ -278,19 +241,16 @@
     .about-title em { font-style: italic; }
     .about-body p { font-size: 16px; line-height: 1.78; color: var(--muted); margin-bottom: 18px; max-width: 56ch; }
     @media (max-width: 820px) {
-      .about { padding: 40px 20px 64px; }
-      .about-grid { grid-template-columns: 1fr; gap: 0; }
+      .about { padding: 64px 20px; }
+      .about-grid { grid-template-columns: 1fr; gap: 32px; }
       .about-img-wrap img { aspect-ratio: auto; height: auto; object-fit: contain; }
-      /* The heading overlaps the faded bottom of the photo so the section
-         reads image-first instead of text-heavy. */
-      .about-body { position: relative; z-index: 1; margin-top: 52px !important; }
+      .about-body { margin-top: 52px !important; position: relative; }
       .about-body .section-label {
         position: absolute; top: 4px; right: 0; margin-bottom: 0;
       }
-      .about-p-extra { display: none; }
     }
     @media (max-width: 480px) {
-      .about { padding: 40px 20px 56px; }
+      .about { padding: 48px 20px; }
       .about-title { font-size: clamp(32px, 8.4vw, 48px); }
       .about-body p { font-size: 15px; }
     }
@@ -361,9 +321,9 @@
       .reel-cell:last-child { grid-column: 1 / -1; width: calc((100% - 2px) / 2); justify-self: center; }
     }
     @media (max-width: 420px) {
-      .reel-grid { grid-template-columns: 1fr; }
-      .reel-cell { aspect-ratio: 4/3; }
-      .reel-cell:last-child { grid-column: auto; width: 100%; }
+      .reel-grid { grid-template-columns: 1fr 1fr; }
+      .reel-cell { aspect-ratio: 9/14; }
+      .reel-cell:last-child { grid-column: 1 / -1; width: calc((100% - 2px) / 2); justify-self: center; }
     }
 
     /* ─── SERVICES ─── */
@@ -430,11 +390,7 @@
       .service-price { font-size: 19px; }
     }
 
-    /* ─── TESTIMONIALS — auto-scrolling review marquee ───
-       Two rows drift in opposite directions. Each track holds its three
-       reviews twice; the keyframes slide exactly one copy's width, so the
-       loop is seamless. The duplicate copy is aria-hidden so screen
-       readers hear each review once. */
+    /* ─── TESTIMONIALS — auto-scrolling review marquee ─── */
     .testimonials { padding: 96px 0; background: var(--canvas); }
     .testimonials .section-label { color: var(--accent); }
     .testi-heading {
@@ -444,31 +400,28 @@
     }
     .testi-heading em { font-style: italic; color: var(--muted); }
     .testi-marquee { position: relative; overflow: hidden; display: grid; gap: 16px; }
-    /* Soft fades at both edges so cards dissolve in and out of the page. */
     .testi-marquee::before, .testi-marquee::after {
       content: ''; position: absolute; top: 0; bottom: 0;
       width: clamp(40px, 8vw, 140px); z-index: 2; pointer-events: none;
     }
     .testi-marquee::before { left: 0; background: linear-gradient(to right, var(--canvas), transparent); }
-    .testi-marquee::after  { right: 0; background: linear-gradient(to left, var(--canvas), transparent); }
+    .testi-marquee::after { right: 0; background: linear-gradient(to left, var(--canvas), transparent); }
     .testi-row { overflow: hidden; }
     .testi-track { display: flex; width: max-content; }
     .testi-group { display: flex; }
     .testi-track-a { animation: testi-drift-right 46s linear infinite; }
     .testi-track-b { animation: testi-drift-left 58s linear infinite; }
     .testi-row:hover .testi-track { animation-play-state: paused; }
-    @keyframes testi-drift-left  { from { transform: translateX(0); }    to { transform: translateX(-50%); } }
+    @keyframes testi-drift-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
     @keyframes testi-drift-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
     .testi-card {
       width: 340px; flex-shrink: 0; margin-right: 16px;
-      background: var(--surface);
-      border: 1px solid var(--hairline); border-left: 2px solid var(--accent);
-      padding: 26px 28px;
+      background: var(--surface); border: 1px solid var(--hairline);
+      border-left: 2px solid var(--accent); padding: 26px 28px;
     }
     .testi-card blockquote {
       font-family: var(--display); font-style: italic;
-      font-size: 17px; line-height: 1.55; color: var(--ink);
-      margin-bottom: 18px;
+      font-size: 17px; line-height: 1.55; color: var(--ink); margin-bottom: 18px;
     }
     .testi-card figcaption {
       font-family: var(--mono); font-size: 10.5px;
@@ -478,15 +431,28 @@
       display: block; font-size: 10px; letter-spacing: 0.1em;
       color: #C8C3BC; margin-top: 3px;
     }
+    .full-reviews { margin: 28px 40px 0; border-top: 1px solid var(--hairline); }
+    .full-reviews summary {
+      cursor: pointer; list-style: none; padding: 18px 0;
+      font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .full-reviews summary::-webkit-details-marker { display: none; }
+    .full-reviews summary::after { content: '＋'; float: right; font-size: 15px; }
+    .full-reviews[open] summary::after { content: '－'; }
+    .full-reviews-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px 48px; padding: 4px 0 28px; }
+    .full-review { border-left: 2px solid var(--accent); padding-left: 18px; }
+    .full-review p { font-family: var(--display); font-size: 16px; line-height: 1.55; color: var(--ink); margin-bottom: 10px; }
+    .full-review cite { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-style: normal; }
     @media (max-width: 820px) {
       .testimonials { padding: 64px 0; }
       .testi-heading { margin-bottom: 32px; }
       .testi-marquee { gap: 12px; }
       .testi-card { width: 270px; padding: 20px 22px; margin-right: 12px; }
       .testi-card blockquote { font-size: 15px; }
+      .full-reviews { margin: 22px 20px 0; }
+      .full-reviews-grid { grid-template-columns: 1fr; gap: 20px; }
     }
-    /* Reduced motion: no animation — reviews sit as a static wrapped list
-       and the duplicate copies disappear. */
     @media (prefers-reduced-motion: reduce) {
       .testi-track { animation: none !important; width: auto; flex-wrap: wrap; gap: 12px; }
       .testi-group { flex-wrap: wrap; gap: 12px; }
@@ -553,9 +519,7 @@
     .form-group input,
     .form-group select,
     .form-group textarea { font: 14.5px/1.5 var(--sans); padding: 11px 13px; border: 1px solid var(--hairline); background: var(--canvas); color: var(--ink); border-radius: 4px; outline: none; transition: border-color 0.18s; -webkit-appearance: none; }
-    /* Focus is shown with a border-color change plus a soft ring, so keyboard
-       users get a clearly visible indicator even though the default outline is off. */
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-pale); }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); }
     .form-group textarea { min-height: 96px; resize: vertical; }
     .form-submit { width: 100%; font: 600 14px/1 var(--sans); padding: 15px 24px; background: var(--ink); color: var(--canvas); border: none; border-radius: 4px; cursor: pointer; letter-spacing: 0.02em; transition: background 0.18s, transform 0.12s; }
     .form-submit:hover { background: #2e2c29; }
@@ -615,7 +579,7 @@
 <body>
 
 <header class="nav" data-od-id="topnav">
-  <a class="nav-brand" href="#hero">Hair by<em> Le Vasseur</em></a>
+  <a class="nav-brand" href="#">Hair by<em> Le Vasseur</em></a>
   <ul class="nav-links" id="mobileNav" role="list">
     <li><a href="#about">About</a></li>
     <li><a href="#gallery">Work</a></li>
@@ -642,7 +606,7 @@
       </div>
     </div>
     <div class="hero-right">
-      <video src="07242826-591B-49F8-A471-3F6058690FD7.MP4" poster="hero-poster.jpg" autoplay muted loop playsinline webkit-playsinline disableRemotePlayback preload="auto"></video>
+      <video src="07242826-591B-49F8-A471-3F6058690FD7.mp4" autoplay muted loop playsinline webkit-playsinline disableRemotePlayback preload="auto"></video>
     </div>
   </section>
 
@@ -658,7 +622,7 @@
         <h2 class="about-title">Precision craft,<br><em>personal touch.</em></h2>
         <p>Gabriel is a hairstylist specializing in both women's and men's cutting and coloring. Born and raised in Ventura, California, he began his career as a barber, where he developed a strong foundation in precision cutting.</p>
         <p>As his craft evolved, Gabriel expanded into women's hairstyling, discovering a deeper passion for the creativity, artistry, and technical skill it allows him to express. Today, he works at KINHOUSE in SoHo, NYC.</p>
-        <p class="about-p-extra">His philosophy: hair should move with you, not against you. Every session starts with a real conversation about your lifestyle, your texture, how much time you want to spend in the mirror each morning.</p>
+        <p>His philosophy: hair should move with you, not against you. Every session starts with a real conversation about your lifestyle, your texture, how much time you want to spend in the mirror each morning.</p>
       </div>
     </div>
   </section>
@@ -674,14 +638,14 @@
     </div>
     <div class="carousel-stage">
       <div class="carousel-ring" id="carouselRing">
-        <div class="carousel-item" style="--i:0"><img src="gallery-1.jpg" alt="Finished look" loading="lazy"/></div>
-        <div class="carousel-item" style="--i:1"><img src="gallery-2.jpg" alt="Styling session" loading="lazy"/></div>
-        <div class="carousel-item" style="--i:2"><img src="gallery-3.jpg" alt="Finished look" loading="lazy"/></div>
+        <div class="carousel-item" style="--i:0"><img src="IMG_3534-web.jpg" alt="Finished look" loading="lazy"/></div>
+        <div class="carousel-item" style="--i:1"><img src="IMG_3529-web.jpg" alt="Finished look" loading="lazy"/></div>
+        <div class="carousel-item" style="--i:2"><img src="motusafb-PHOTO-2026-05-05-17-31-17.jpg" alt="Styling session" loading="lazy"/></div>
         <div class="carousel-item" style="--i:3"><img src="motusag9-PHOTO-2026-05-05-17-37-39.jpg" alt="Detail work" loading="lazy"/></div>
-        <div class="carousel-item" style="--i:4"><img src="gallery-4.jpg" alt="Finished look" loading="lazy"/></div>
-        <div class="carousel-item" style="--i:5"><img src="gallery-7.jpg" alt="Transformation" loading="lazy"/></div>
-        <div class="carousel-item" style="--i:6"><img src="gallery-5.jpg" alt="Finished look" loading="lazy"/></div>
-        <div class="carousel-item" style="--i:7"><img src="gallery-6.jpg" alt="Styling session" loading="lazy"/></div>
+        <div class="carousel-item" style="--i:4"><img src="IMG_3531-web.jpg" alt="Finished look" loading="lazy"/></div>
+        <div class="carousel-item" style="--i:5"><img src="motusag9-PHOTO-2026-05-05-18-25-35.jpg" alt="Transformation" loading="lazy"/></div>
+        <div class="carousel-item" style="--i:6"><img src="IMG_3528-web.jpg" alt="Finished look" loading="lazy"/></div>
+        <div class="carousel-item" style="--i:7"><img src="mirror-pose-ava-web.jpg" alt="Styling session" loading="lazy"/></div>
       </div>
     </div>
     <div class="wrap">
@@ -695,9 +659,9 @@
       <span class="section-label" style="margin-bottom:0">Reel</span>
     </div>
     <div class="reel-grid reveal">
-      <div class="reel-cell"><video src="motusagh-VIDEO-2026-05-05-18-24-00.mp4" autoplay muted loop playsinline webkit-playsinline preload="none"></video></div>
-      <div class="reel-cell"><video src="motusakz-VIDEO-2026-05-05-18-25-28.mp4" autoplay muted loop playsinline webkit-playsinline preload="none"></video></div>
-      <div class="reel-cell"><video src="motusaon-VIDEO-2026-05-05-18-34-26.mp4" autoplay muted loop playsinline webkit-playsinline preload="none"></video></div>
+      <div class="reel-cell"><video src="motusagh-VIDEO-2026-05-05-18-24-00.mp4" autoplay muted loop playsinline webkit-playsinline preload="metadata"></video></div>
+      <div class="reel-cell"><video src="motusakz-VIDEO-2026-05-05-18-25-28.mp4" autoplay muted loop playsinline webkit-playsinline preload="metadata"></video></div>
+      <div class="reel-cell"><video src="motusaon-VIDEO-2026-05-05-18-34-26.mp4" autoplay muted loop playsinline webkit-playsinline preload="metadata"></video></div>
     </div>
   </section>
 
@@ -852,7 +816,7 @@
           <button type="submit" class="form-submit">Send request</button>
           <!-- role=status makes screen readers announce the result without stealing focus. -->
           <p class="form-status" id="formStatus" role="status" aria-live="polite" hidden></p>
-          <p class="form-note">Confirmation within 24 hours</p>
+          <p class="form-note">Confirmation within 24 hours · <a href="privacy.html">Privacy Policy</a></p>
         </form>
       </div>
     </div>
@@ -870,8 +834,8 @@
       <a href="#testimonials">Reviews</a>
       <a href="#press">Press</a>
       <a href="#contact">Reserve</a>
-      <a href="https://www.instagram.com/gabriellevasseurhair?utm_source=qr" target="_blank" rel="noopener noreferrer">Instagram</a>
-      <a href="https://www.tiktok.com/@gabriellevasseurhair?_r=1&amp;_t=ZP-98pTJP2ikpi" target="_blank" rel="noopener noreferrer">TikTok</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
     </nav>
   </div>
 </footer>
@@ -979,6 +943,26 @@
         toggle.setAttribute('aria-expanded', 'false');
         toggle.setAttribute('aria-label', 'Open navigation menu');
       }
+    });
+  })();
+
+  /* ─── MOBILE REVIEW ACCORDION ────────────────────────────────── */
+  (function() {
+    if (!window.matchMedia('(max-width: 820px)').matches) return;
+    document.querySelectorAll('.testi-item').forEach(function(item) {
+      var quote = item.querySelector('.testi-item-quote');
+      if (!quote) return;
+      var toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'testi-toggle';
+      toggle.textContent = 'Read full review';
+      toggle.setAttribute('aria-expanded', 'false');
+      quote.insertAdjacentElement('afterend', toggle);
+      toggle.addEventListener('click', function() {
+        var open = item.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.textContent = open ? 'Close review' : 'Read full review';
+      });
     });
   })();
 
