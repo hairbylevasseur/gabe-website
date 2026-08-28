@@ -180,6 +180,13 @@
       -webkit-mask-image: radial-gradient(ellipse at center, #000 38%, transparent 83%);
       mask-image: radial-gradient(ellipse at center, #000 38%, transparent 83%);
     }
+    /* The video sits on top of the still and paints an opaque box of its own
+       until it has frames — which hides the still exactly when it is needed:
+       iOS blocks autoplay in Low Power Mode, and a slow connection delays it
+       for everyone. Transparent here lets the still through; the cream stays
+       on the still below, where desktop needs it behind the letterboxed edges.
+       Must come after the shared rule above or the cascade discards it. */
+    .hero-right video { background: transparent; }
     .hero-right::after {
       content: ''; position: absolute; inset: 0; z-index: 1;
       background:
@@ -643,7 +650,15 @@
       </div>
     </div>
     <div class="hero-right">
-      <video src="07242826-591B-49F8-A471-3F6058690FD7.MP4" poster="hero-poster.jpg" autoplay muted loop playsinline webkit-playsinline disableRemotePlayback preload="auto"></video>
+      <!-- The still frame is a real <img>, not the video's poster attribute.
+           Safari ignores object-fit on a poster, so a poster renders letterboxed
+           and then snaps to full-bleed the instant the video starts. This <img>
+           picks up the same object-fit and mask rules as the video sitting on top
+           of it, so the hero looks identical before and after playback begins —
+           including when iOS blocks autoplay in Low Power Mode. -->
+      <img class="hero-still" src="hero-poster.jpg" alt="" width="720" height="1280"
+           fetchpriority="high" decoding="async" />
+      <video src="07242826-591B-49F8-A471-3F6058690FD7.MP4" autoplay muted loop playsinline webkit-playsinline disableRemotePlayback preload="auto"></video>
     </div>
   </section>
 
