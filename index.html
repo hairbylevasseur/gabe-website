@@ -486,11 +486,12 @@
       .testi-card blockquote { font-size: 15px; }
     }
     /* Reduced motion: no animation — reviews sit as a static wrapped list
-       and the duplicate copies disappear. */
+       and the duplicate copies disappear, including the decorative second row. */
     @media (prefers-reduced-motion: reduce) {
       .testi-track { animation: none !important; width: auto; flex-wrap: wrap; gap: 12px; }
       .testi-group { flex-wrap: wrap; gap: 12px; }
       .testi-group[aria-hidden="true"] { display: none; }
+      .testi-row[aria-hidden="true"] { display: none; }
       .testi-marquee::before, .testi-marquee::after { display: none; }
       .testi-marquee { padding: 0 20px; }
       .testi-card { margin-right: 0; }
@@ -729,7 +730,11 @@
           </div>
         </div>
       </div>
-      <div class="testi-row">
+      <!-- Row B repeats row A's six reviews in a different order, purely so the
+           two rows drift past each other with varied content. It adds nothing a
+           screen reader has not already heard from row A, so the whole row is
+           hidden from the accessibility tree. -->
+      <div class="testi-row" aria-hidden="true">
         <div class="testi-track testi-track-b">
           <div class="testi-group">
             <figure class="testi-card"><blockquote>"He never cuts my hair too short and always keeps it healthy and long. I would recommend him to someone who’s nervous to get their hair cut."</blockquote><figcaption>Meagan M. <span>Client since 2023</span></figcaption></figure>
