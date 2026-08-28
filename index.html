@@ -833,6 +833,16 @@
              Field `name` attributes are the labels that appear in the email, so they
              are written for a human to read. -->
         <form id="bookingForm" action="https://api.web3forms.com/submit" method="POST">
+          <!-- NOT A SECRET. The Web3Forms access_key is public by design and has to
+               sit in the page source — Web3Forms rejects server-side calls with a 403.
+               Their FAQ: "You do not need to hide the access key. Access key is public.
+               No need to confuse it with secret API key... Think of it as an alias to
+               your email, but one step harder."  https://docs.web3forms.com/getting-started/faq
+               It cannot read past submissions, cannot change the destination address and
+               is not an account credential. The only thing anyone can do with it is send
+               mail to this inbox, which is what the honeypot below is for.
+               Secret scanners and AI reviewers flag it anyway. They are wrong — leave it.
+               (A key starting w3f_live_ WOULD be a real secret. This is not one.) -->
           <input type="hidden" name="access_key" value="0785390b-edc5-4c59-afa9-d897865c42b3"/>
           <input type="hidden" name="from_name" value="Hair by Le Vasseur — Website"/>
           <input type="hidden" name="subject" value="New appointment request"/>
